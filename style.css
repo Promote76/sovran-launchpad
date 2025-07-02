@@ -1,98 +1,44 @@
+// script.js - Fully Enhanced Version
 
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+let web3; let userAccount; const connectBtn = document.getElementById("connectBtn"); const contributeBtn = document.getElementById("contributeBtn"); const walletAddressDisplay = document.getElementById("walletAddress"); const tokenSelect = document.getElementById("tokenSelect"); const amountInput = document.getElementById("amountInput"); const walletBalanceDisplay = document.getElementById("walletBalance");
+
+window.addEventListener("load", async () => { if (typeof window.ethereum !== "undefined") { web3 = new Web3(window.ethereum);
+
+// Auto-reconnect wallet if previously connected
+const previouslyConnected = localStorage.getItem("walletConnected");
+if (previouslyConnected) {
+  await connectWallet();
 }
 
-body {
-  background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #f0f0f0;
-  line-height: 1.6;
-  padding: 20px;
+// Detect chain and warn if not BSC (Chain ID: 56)
+const chainId = await web3.eth.getChainId();
+if (chainId !== 56) {
+  alert("Please switch your network to Binance Smart Chain (BSC)");
 }
 
-header {
-  background-color: #111;
-  padding: 15px 20px;
-  text-align: center;
-  border-bottom: 2px solid crimson;
-}
+} else { alert("MetaMask or a compatible wallet is not installed."); } });
 
-h1 {
-  font-size: 2.5rem;
-  color: gold;
-  text-shadow: 2px 2px 5px crimson;
-  margin-bottom: 20px;
-}
+connectBtn.addEventListener("click", async () => { await connectWallet(); });
 
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  padding: 10px;
-  background-color: #222;
-  border-bottom: 2px solid crimson;
-}
+async function connectWallet() { try { const accounts = await window.ethereum.request({ method: "eth_requestAccounts", }); userAccount = accounts[0]; displayWalletAddress(userAccount); await updateWalletBalance(); connectBtn.innerText = "Wallet Connected"; connectBtn.disabled = true; localStorage.setItem("walletConnected", true); } catch (error) { console.error("Wallet connection error:", error); alert("Wallet connection was cancelled or failed."); } }
 
-nav a {
-  color: #eee;
-  text-decoration: none;
-  padding: 10px 20px;
-  background-color: #333;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
+function displayWalletAddress(address) { const shortAddress = ${address.substring(0, 6)}...${address.slice(-4)}; walletAddressDisplay.innerText = shortAddress; walletAddressDisplay.style.display = "block"; }
 
-nav a:hover {
-  background-color: crimson;
-  color: gold;
-  transform: scale(1.05);
-}
+async function updateWalletBalance() { const balance = await web3.eth.getBalance(userAccount); const formatted = web3.utils.fromWei(balance, "ether"); walletBalanceDisplay.innerText = ${formatted} BNB; }
 
-section {
-  max-width: 800px;
-  margin: 40px auto;
-  background-color: #1a1a1a;
-  padding: 20px;
-  border: 1px solid crimson;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
-}
+contributeBtn.addEventListener("click", async () => { if (!userAccount) { alert("Please connect your wallet first."); return; }
 
-button {
-  background-color: crimson;
-  color: #fff;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+const selectedToken = tokenSelect.value; const amount = amountInput.value;
 
-button:hover {
-  background-color: gold;
-  color: black;
-}
+if (!amount || isNaN(amount) || Number(amount) <= 0) { alert("Please enter a valid contribution amount."); return; }
 
-.wallet-info {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: lightgreen;
-}
+const amountInWei = web3.utils.toWei(amount, "ether");
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    gap: 10px;
-  }
+try { const tx = await web3.eth.sendTransaction({ from: userAccount, to: "0xYourContractAddressHere", // Replace with your contract value: amountInWei, });
 
-  section {
-    padding: 15px;
-  }
-}
+alert("Contribution successful! TxHash: " + tx.transactionHash);
+
+} catch (error) { console.error("Contribution error:", error); alert("Transaction failed or was cancelled."); } });
+
+// Disconnect wallet manually function disconnectWallet() { userAccount = null; localStorage.removeItem("walletConnected"); walletAddressDisplay.innerText = ""; connectBtn.innerText = "Connect Wallet"; connectBtn.disabled = false; walletBalanceDisplay.innerText = "Connect wallet to see balance."; }
+
