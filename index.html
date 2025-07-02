@@ -1,48 +1,78 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sovran Launchpad</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1 class="glow">Sovran Launchpad</h1>
-    <p class="sub">Empowering Sovereign Projects with Web3 Funding</p>
-  </header>  <main>
-    <section class="wallet-section">
-      <button id="connectWallet">🔌 Connect Wallet</button>
-      <p id="walletAddress"></p>
-    </section><section class="contribute">
-  <h2>Contribute Tokens</h2>
-  <form id="contributionForm">
-    <label for="token">Select Token:</label>
-    <select id="token">
-      <option value="0x3E14602186DD9dE538F729547B3918D24c823546">WBNB</option>
-      <option value="0x2170Ed0880ac9A755fd29B2688956BD959F933F8">WETH</option>
-      <option value="0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE">WXRP</option>
-      <option value="0x0555E30da8f98308EdB960aa94C0Db47230d2B9c">WBTC</option>
-    </select>
 
-    <label for="amount">Amount to Contribute:</label>
-    <input type="number" step="0.01" id="amount" required />
+  <header class="hero">
+    <div class="overlay">
+      <h1>SOVRAN LAUNCHPAD</h1>
+      <p>Empowering Decentralized Projects Through Multi-Token Contributions</p>
+      <button id="connectBtn">Connect Wallet</button>
+    </div>
+  </header>
 
-    <button type="submit">🚀 Contribute</button>
-  </form>
-  <p id="status"></p>
-</section>
+  <main>
+    <section class="contribute-box">
+      <h2>Contribute to the Launchpad</h2>
+      <form id="contributeForm">
+        <label for="token">Select Token:</label>
+        <select id="token">
+          <option value="WBNB">WBNB</option>
+          <option value="WETH">WETH</option>
+          <option value="WXRP">WXRP</option>
+          <option value="WBTC">WBTC</option>
+        </select>
 
-<section class="info">
-  <h2>Launchpad Info</h2>
-  <ul>
-    <li>Min: 0.05 ETH equivalent</li>
-    <li>Max: 10 ETH equivalent</li>
-    <li>Whitelist-only: <strong>Enabled</strong></li>
-  </ul>
-</section>
+        <label for="amount">Amount to Contribute:</label>
+        <input type="number" id="amount" placeholder="e.g. 0.5" min="0.05" step="0.01" required>
 
-  </main>  <footer>
-    <p>&copy; 2025 Sovran Launchpad. All Rights Reserved.</p>
-  </footer>  <script src="script.js"></script></body>
+        <button type="submit">Contribute</button>
+      </form>
+    </section>
+
+    <section class="tokenomics">
+      <h2>Tokenomics</h2>
+      <ul>
+        <li>Max Supply: 1,000,000 SWF</li>
+        <li>Liquidity Reserve: 40%</li>
+        <li>Ecosystem Fund: 30%</li>
+        <li>Team Allocation: 15%</li>
+        <li>Public Contributors: 15%</li>
+      </ul>
+    </section>
+
+    <section class="roadmap">
+      <h2>Roadmap</h2>
+      <ol>
+        <li>Q1: Launchpad MVP & Smart Contract Deployment</li>
+        <li>Q2: Audit & Multi-Chain Integration</li>
+        <li>Q3: DAO Governance & Staking Pools</li>
+        <li>Q4: Real World Asset Tokenization</li>
+      </ol>
+    </section>
+
+    <section class="social">
+      <h2>Connect With Us</h2>
+      <div class="social-links">
+        <a href="#" target="_blank">Twitter</a>
+        <a href="#" target="_blank">Telegram</a>
+        <a href="#" target="_blank">Discord</a>
+        <a href="#" target="_blank">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sovran Wealth Fund | Powered by Blockchain Sovereignty</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
 </html>
