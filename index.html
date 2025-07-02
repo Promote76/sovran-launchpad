@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sovran Launchpad</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+  <header>
+    <h1>Sovran Launchpad</h1>
+    <button id="connectWallet">Connect Wallet</button>
+  </header>
+  <main>
+    <section id="status"></section>
+    <section id="contribute">
+      <input type="number" id="amount" placeholder="Enter amount"/>
+      <select id="tokenSelect">
+        <option value="BNB">BNB</option>
+        <option value="WETH">WETH</option>
+        <option value="WXRP">WXRP</option>
+        <option value="WBTC">WBTC</option>
+      </select>
+      <button id="contributeBtn">Contribute</button>
+    </section>
+  </main>
+  <script src="assets/js/web3-config.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
