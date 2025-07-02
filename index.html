@@ -1,49 +1,59 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sovran Launchpad</title>
+
+  <!-- CSS Styles -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Web3.js & Ethers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.3.0/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Sovran Launchpad</h1>
-    <nav>
-      <button id="connectBtn">Connect Wallet</button>
-    </nav>
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1 class="logo">Sovran Launchpad</h1>
+    <button id="connectWalletBtn" class="btn">Connect Wallet</button>
   </header>
-  <main>
-    <h2>Contribute</h2>
-    <p>Select your token and enter the amount to contribute.</p>
-    <form id="contributeForm">
-      <select id="tokenSelector">
-        <option value="WBNB">WBNB</option>
-        <option value="WXRP">WXRP</option>
-        <option value="WETH">WETH</option>
-        <option value="WBTC">WBTC</option>
-      </select>
-      <input type="number" id="amount" placeholder="Amount" required />
-      <button type="submit">Contribute</button>
-    </form><div id="enhancements">
-  <h3>Wallet Balance</h3>
-  <p id="walletBalance">Connect wallet to see balance.</p>
 
-  <h3>Transaction History</h3>
-  <ul id="transactionHistory"></ul>
+  <!-- STATUS PANEL -->
+  <section class="status-panel">
+    <p><strong>Wallet Address:</strong> <span id="walletAddress">Not connected</span></p>
+    <p><strong>Network:</strong> <span id="networkStatus">Unknown</span></p>
+    <p><strong>Connected Token:</strong> <span id="selectedToken">-</span></p>
+    <p><strong>Balance:</strong> <span id="walletBalance">0</span></p>
+  </section>
 
-  <h3>Signature Verification</h3>
-  <button id="signBtn">Sign Participation</button>
-  <p id="signatureStatus"></p>
+  <!-- CONTRIBUTION FORM -->
+  <section class="form-section">
+    <h2>Contribute to the Launchpad</h2>
 
-  <h3>Admin Controls</h3>
-  <button id="releaseFundsBtn">Release Funds (Admin Only)</button>
-  <p id="adminStatus"></p>
-</div>
+    <label for="tokenSelect">Select Token:</label>
+    <select id="tokenSelect">
+      <option value="WBNB">WBNB</option>
+      <option value="WETH">WETH</option>
+      <option value="WXRP">WXRP</option>
+      <option value="WBTC">WBTC</option>
+    </select>
 
-<p id="status"></p>
+    <label for="contributionAmount">Amount:</label>
+    <input type="number" id="contributionAmount" placeholder="e.g. 0.5" step="0.01" min="0.05" />
 
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+    <button id="contributeBtn" class="btn">Contribute</button>
+
+    <div id="messageArea" class="message-area"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 Sovran Wealth Fund — All Rights Reserved</p>
+  </footer>
+
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
