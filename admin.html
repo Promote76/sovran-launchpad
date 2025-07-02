@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Launchpad Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f1b2d;
+      color: #fff;
+      padding: 20px;
+    }
+    h2 { color: #0fc0fc; }
+    .section {
+      background: #1d2d44;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 14px;
+    }
+    button {
+      background-color: #00d395;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h2>Sovran Launchpad Admin Dashboard</h2>
+  <p id="walletStatus">Connecting...</p>
+
+  <div id="adminPanel" class="hidden">
+    <div class="section">
+      <h3>Whitelist Address</h3>
+      <input type="text" id="wlAddress" placeholder="0x address to whitelist" />
+      <button onclick="whitelistAddress()">Whitelist</button>
+    </div>
+
+    <div class="section">
+      <h3>Set Contribution Limits</h3>
+      <input type="number" id="minLimit" placeholder="Min in Wei (e.g., 50000000000000000)" />
+      <input type="number" id="maxLimit" placeholder="Max in Wei (e.g., 10000000000000000000)" />
+      <button onclick="setLimits()">Set Limits</button>
+    </div>
+
+    <div class="section">
+      <h3>Toggle Whitelist Mode</h3>
+      <select id="wlMode">
+        <option value="true">Whitelist Only</option>
+        <option value="false">Public Mode</option>
+      </select>
+      <button onclick="setWhitelistMode()">Update Mode</button>
+    </div>
+
+    <div class="section">
+      <h3>Set Launchpad Status</h3>
+      <select id="padStatus">
+        <option value="true">Active</option>
+        <option value="false">Closed</option>
+      </select>
+      <button onclick="setLaunchpadStatus()">Update Status</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script>
+    const launchpadAddress = "0x0C0bfd4E4170411bc9665A368FaFaB3048883C4C";
+    const ABI = [{"inputs": [{"internalType": "address", "name": "_treasuryAddress", "type": "address"}, {"internalType": "address", "name": "_admin", "type": "address"}], "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "newAdmin", "type": "address"}], "name": "AdminChanged", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}], "name": "OwnershipTransferred", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "contributor", "type": "address"}, {"indexed": true, "internalType": "address", "name": "token", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256"}], "name": "TokenContributed", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "user", "type": "address"}], "name": "Whitelisted", "type": "event"}, {"inputs": [{"internalType": "address", "name": "user", "type": "address"}], "name": "whitelistAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "minAmt", "type": "uint256"}, {"internalType": "uint256", "name": "maxAmt", "type": "uint256"}], "name": "setContributionLimits", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "bool", "name": "_whitelistOnly", "type": "bool"}], "name": "setWhitelistMode", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "bool", "name": "status", "type": "bool"}], "name": "setLaunchpadStatus", "outputs": [], "stateMutability": "nonpayable", "type": "function"}];
+
+    let web3, contract, account;
+    const owner = "0x62c62b5Bcb31cA7F04910d6Be28d74E07DB24bA5";
+
+    async function connect() {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        account = accounts[0];
+        contract = new web3.eth.Contract(ABI, launchpadAddress);
+
+        document.getElementById("walletStatus").innerText = `Connected: ${account}`;
+        if (account.toLowerCase() === owner.toLowerCase()) {
+          document.getElementById("adminPanel").classList.remove("hidden");
+        } else {
+          document.getElementById("walletStatus").innerText += " (Not Admin)";
+        }
+      } else {
+        alert("Please install MetaMask");
+      }
+    }
+
+    async function whitelistAddress() {
+      const user = document.getElementById("wlAddress").value;
+      await contract.methods.whitelistAddress(user).send({ from: account });
+      alert("Whitelisted!");
+    }
+
+    async function setLimits() {
+      const min = document.getElementById("minLimit").value;
+      const max = document.getElementById("maxLimit").value;
+      await contract.methods.setContributionLimits(min, max).send({ from: account });
+      alert("Limits Updated!");
+    }
+
+    async function setWhitelistMode() {
+      const mode = document.getElementById("wlMode").value === "true";
+      await contract.methods.setWhitelistMode(mode).send({ from: account });
+      alert("Whitelist Mode Updated!");
+    }
+
+    async function setLaunchpadStatus() {
+      const status = document.getElementById("padStatus").value === "true";
+      await contract.methods.setLaunchpadStatus(status).send({ from: account });
+      alert("Launchpad Status Updated!");
+    }
+
+    window.addEventListener("load", connect);
+  </script>
+
+    <div class="section">
+      <h3>Vault Governance Panel</h3>
+      <button onclick="createProposal()">Create Proposal</button>
+      <button onclick="vote()">Vote</button>
+      <button onclick="pauseContract()">Pause Contract</button>
+      <button onclick="unpauseContract()">Unpause Contract</button>
+      <button onclick="withdrawAll()">Withdraw All</button>
+      <button onclick="withdrawLimited()">Withdraw Limited</button>
+      <button onclick="setVaultController()">Set Vault Controller</button>
+    </div>
+
+    <div class="section">
+      <h3>SWF Master DAO Ultimate Panel</h3>
+      <button onclick="claimRewards()">Claim Rewards</button>
+      <button onclick="createPool()">Create Pool</button>
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="openAccount()">Open Account</button>
+      <button onclick="stake()">Stake</button>
+      <button onclick="setBackingReserve()">Set Backing Reserve</button>
+      <button onclick="setCommodityBacking()">Set Commodity Backing</button>
+      <button onclick="setDailyWithdrawLimit()">Set Daily Withdraw Limit</button>
+      <button onclick="setInterestRate()">Set Interest Rate</button>
+      <button onclick="setMaxDeposit()">Set Max Deposit</button>
+      <button onclick="updateCPSchema()">Update CP Schema</button>
+    </div>
+
+</body>
+</html>
