@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sovran Launchpad</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1 class="glow">Sovran Launchpad</h1>
+    <p class="tagline">Powering Decentralized Funding with BNB, ETH, XRP, and BTC</p>
+  </header>
+
+  <main>
+    <section class="contribute-section">
+      <h2>Contribute</h2>
+      <form id="contributeForm">
+        <label for="token">Choose Token:</label>
+        <select id="token" name="token">
+          <option value="WBNB">WBNB</option>
+          <option value="WETH">WETH</option>
+          <option value="WXRP">WXRP</option>
+          <option value="WBTC">WBTC</option>
+        </select>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" placeholder="Enter amount" required />
+        <button type="submit">Contribute</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Sovran Wealth Fund | Launchpad by The Moabite Federation</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
