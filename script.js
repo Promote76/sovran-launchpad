@@ -1,58 +1,44 @@
+// script.js - Fully Enhanced Version
 
-// Enhanced script.js with wallet detection, balance fetch, transaction, and signature
-const connectButton = document.getElementById("connectWallet");
-const contributeButton = document.getElementById("contributeBtn");
-const balanceDisplay = document.getElementById("walletBalance");
-const tokenSelect = document.getElementById("tokenSelect");
+let web3; let userAccount; const connectBtn = document.getElementById("connectBtn"); const contributeBtn = document.getElementById("contributeBtn"); const walletAddressDisplay = document.getElementById("walletAddress"); const tokenSelect = document.getElementById("tokenSelect"); const amountInput = document.getElementById("amountInput"); const walletBalanceDisplay = document.getElementById("walletBalance");
 
-let currentAccount;
-let provider;
-let signer;
+window.addEventListener("load", async () => { if (typeof window.ethereum !== "undefined") { web3 = new Web3(window.ethereum);
 
-const tokenAddresses = {
-  WBNB: "0x3E14602186DD9dE538F729547B3918D24c823546",
-  WXRP: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
-  WETH: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-  WBTC: "0x0555E30da8f98308EdB960aa94C0Db47230d2B9c"
-};
-
-const tokenABI = [
-  "function balanceOf(address owner) view returns (uint256)",
-  "function transfer(address to, uint amount) returns (bool)"
-];
-
-async function connectWallet() {
-  if (window.ethereum) {
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = provider.getSigner();
-    currentAccount = await signer.getAddress();
-    connectButton.innerText = "Wallet Connected";
-    fetchBalance();
-  } else {
-    alert("MetaMask not detected.");
-  }
+// Auto-reconnect wallet if previously connected
+const previouslyConnected = localStorage.getItem("walletConnected");
+if (previouslyConnected) {
+  await connectWallet();
 }
 
-async function fetchBalance() {
-  const selectedToken = tokenSelect.value;
-  const tokenAddress = tokenAddresses[selectedToken];
-  const contract = new ethers.Contract(tokenAddress, tokenABI, provider);
-  const balance = await contract.balanceOf(currentAccount);
-  balanceDisplay.innerText = `Balance: ${ethers.utils.formatUnits(balance, 18)} ${selectedToken}`;
+// Detect chain and warn if not BSC (Chain ID: 56)
+const chainId = await web3.eth.getChainId();
+if (chainId !== 56) {
+  alert("Please switch your network to Binance Smart Chain (BSC)");
 }
 
-async function contribute() {
-  const amount = document.getElementById("contributionAmount").value;
-  const selectedToken = tokenSelect.value;
-  const tokenAddress = tokenAddresses[selectedToken];
-  const contract = new ethers.Contract(tokenAddress, tokenABI, signer);
-  const tx = await contract.transfer("0xYourLaunchpadContractAddress", ethers.utils.parseUnits(amount, 18));
-  await tx.wait();
-  alert("Contribution Successful!");
-  fetchBalance();
-}
+} else { alert("MetaMask or a compatible wallet is not installed."); } });
 
-connectButton.addEventListener("click", connectWallet);
-contributeButton.addEventListener("click", contribute);
-tokenSelect.addEventListener("change", fetchBalance);
+connectBtn.addEventListener("click", async () => { await connectWallet(); });
+
+async function connectWallet() { try { const accounts = await window.ethereum.request({ method: "eth_requestAccounts", }); userAccount = accounts[0]; displayWalletAddress(userAccount); await updateWalletBalance(); connectBtn.innerText = "Wallet Connected"; connectBtn.disabled = true; localStorage.setItem("walletConnected", true); } catch (error) { console.error("Wallet connection error:", error); alert("Wallet connection was cancelled or failed."); } }
+
+function displayWalletAddress(address) { const shortAddress = ${address.substring(0, 6)}...${address.slice(-4)}; walletAddressDisplay.innerText = shortAddress; walletAddressDisplay.style.display = "block"; }
+
+async function updateWalletBalance() { const balance = await web3.eth.getBalance(userAccount); const formatted = web3.utils.fromWei(balance, "ether"); walletBalanceDisplay.innerText = ${formatted} BNB; }
+
+contributeBtn.addEventListener("click", async () => { if (!userAccount) { alert("Please connect your wallet first."); return; }
+
+const selectedToken = tokenSelect.value; const amount = amountInput.value;
+
+if (!amount || isNaN(amount) || Number(amount) <= 0) { alert("Please enter a valid contribution amount."); return; }
+
+const amountInWei = web3.utils.toWei(amount, "ether");
+
+try { const tx = await web3.eth.sendTransaction({ from: userAccount, to: "0xYourContractAddressHere", // Replace with your contract value: amountInWei, });
+
+alert("Contribution successful! TxHash: " + tx.transactionHash);
+
+} catch (error) { console.error("Contribution error:", error); alert("Transaction failed or was cancelled."); } });
+
+// Disconnect wallet manually function disconnectWallet() { userAccount = null; localStorage.removeItem("walletConnected"); walletAddressDisplay.innerText = ""; connectBtn.innerText = "Connect Wallet"; connectBtn.disabled = false; walletBalanceDisplay.innerText = "Connect wallet to see balance."; }
+
