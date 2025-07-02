@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sovran Launchpad</title>
+  <style>
+    body {
+      background-color: #121f3d;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 {
+      color: #0fc0fc;
+    }
+    .btn {
+      background-color: #00d395;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    select, input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sovran Launchpad</h2>
+  <p>Connect your wallet and contribute using supported tokens.</p>
+
+  <button id="connectWallet" class="btn">Connect Wallet</button>
+  <p id="walletInfo">Not connected</p>
+
+  <div>
+    <label for="token">Select Token:</label><br/>
+    <select id="token">
+      <option value="WETH">WETH</option>
+      <option value="WBNB">WBNB</option>
+      <option value="WXRP">WXRP</option>
+      <option value="WBTC">WBTC</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="amount">Amount:</label><br/>
+    <input type="number" id="amount" placeholder="1" value="1" />
+  </div>
+
+  <button id="contribute" class="btn">Contribute</button>
+
+  <p id="feedback"></p>
+
+  <!-- External scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider/dist/umd/index.min.js"></script>
+
+  <!-- App logic -->
+  <script src="app.js"></script>
+</body>
+</html>
