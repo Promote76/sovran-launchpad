@@ -1,30 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- index.html --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sovran Launchpad</title>
-  <link rel="stylesheet" href="assets/css/style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>Sovran Launchpad</h1>
     <button id="connectWallet">Connect Wallet</button>
-  </header>
-  <main>
-    <section id="status"></section>
-    <section id="contribute">
-      <input type="number" id="amount" placeholder="Enter amount"/>
-      <select id="tokenSelect">
-        <option value="BNB">BNB</option>
-        <option value="WETH">WETH</option>
-        <option value="WXRP">WXRP</option>
-        <option value="WBTC">WBTC</option>
-      </select>
-      <button id="contributeBtn">Contribute</button>
-    </section>
-  </main>
-  <script src="assets/js/web3-config.js"></script>
-  <script src="assets/js/app.js"></script>
-</body>
+    <p id="walletAddress">Not Connected</p>
+  </header>  <section class="balance-section">
+    <h2>Your Balances</h2>
+    <div id="balances"></div>
+  </section>  <section class="contribution-section">
+    <h2>Launchpad Contribution</h2>
+    <label for="tokenSelect">Select Token:</label>
+    <select id="tokenSelect">
+      <option value="WBNB">WBNB</option>
+      <option value="WXRP">WXRP</option>
+      <option value="WETH">WETH</option>
+      <option value="WBTC">WBTC</option>
+    </select>
+    <input type="number" id="contributionAmount" placeholder="Amount" />
+    <button id="contributeButton">Contribute</button>
+  </section>  <section class="airdrop-section">
+    <h2>Airdrop Claim</h2>
+    <button id="claimAirdrop">Claim Airdrop</button>
+  </section>  <section class="dao-section">
+    <h2>DAO Governance</h2>
+    <input type="text" id="proposalText" placeholder="Proposal Description" />
+    <button id="submitProposal">Submit Proposal</button><div id="proposalsContainer"></div>
+
+  </section>  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>  <script src="web3-config.js"></script>  <script src="app.js"></script></body>
 </html>
