@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #1e293b;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 255, 123, 0.15);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: #22d3ee;
+}
+
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  color: #93c5fd;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #334155;
+  background-color: #0f172a;
+  color: #f8fafc;
+  margin-bottom: 1rem;
+}
+
+button {
+  background-color: #10b981;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #059669;
+}
+
+#walletInfo {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #38bdf8;
+}
+
+#feedback {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #facc15;
+}
