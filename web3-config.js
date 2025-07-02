@@ -1,13 +1,12 @@
-
-let web3;
-
-async function initWeb3() {
-  if (window.ethereum) {
-    web3 = new Web3(window.ethereum);
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+window.addEventListener("load", async () => {
+  if (typeof window.ethereum !== "undefined") {
+    window.web3 = new Web3(window.ethereum);
+    try {
+      await ethereum.request({ method: "eth_requestAccounts" });
+    } catch (e) {
+      console.error("User denied wallet connection");
+    }
   } else {
-    alert("Please install MetaMask or a compatible wallet.");
+    alert("Please install MetaMask or use a Web3-enabled browser.");
   }
-}
-
-export { web3, initWeb3 };
+});
